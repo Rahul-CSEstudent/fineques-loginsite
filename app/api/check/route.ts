@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
     const email = formData.get('email')
 
     const userDataPath = path.join(__dirname, 'UserData.csv');
+    // const userDataPath = "./UserData.csv";
 
     const fileData = fs.readFileSync(userDataPath, 'utf-8');
     const records:any = [];
