@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation';
+import fs from 'fs';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -13,41 +14,25 @@ const Login: React.FC = () => {
   const { toast } = useToast()
   const router = useRouter()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
-
-    fetch('/api/check', {
-      method: 'POST',
-      body: formData
+    fetch('./data.json')
+    .then(response => response.json())
+    .then((data: Array<{ "Employee Number": string, "Full Name": string, "Work Email": string, "Password": string }>) => {
+      const user = data.find((user: { "Employee Number": string, "Full Name": string, "Work Email": string, "Password": string }) => user["Work Email"].trim() === email.trim() && user["Password"].trim() === password.trim());
+      if (user) {
+        alert('Logged in');
+        console.log(user)
+        router.push('./choose');
+        
+      } else {
+        alert('User not found');
+      }
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.user) {
-          toast({
-            variant: "default",
-            title: "Logged in successfully"
-          })
-          router.push("/choose");
-        } else {
-          toast({
-            variant: "destructive",
-            title: "User not found.",
-            description: "kindly, check your mail id and password"
-          })
-        }
-      })
-      .catch(error => {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "Something went wrong on our side. contact the team if problem persists"
-        })
-      });
-  };
+    .catch((error: Error) => console.error('Error:', error));
+  }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
