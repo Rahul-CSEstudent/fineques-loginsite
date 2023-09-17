@@ -45,6 +45,7 @@ export function ChoiceCard(props: ChoiceCardProps) {
 export default function ChoiceList() {
 
     const { toast } = useToast();
+    const router = useRouter();
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
@@ -78,18 +79,8 @@ export default function ChoiceList() {
     }
 
     const signout = async () => {
-        // Add sign out logic here
-       // Add sign out logic here
-           try {
-               // Perform sign out operation
-               await (pb.authStore as any).signOut();
-               console.log("logged out")
-               // Redirect to login page
-           } catch (error) {
-               console.log("Error signing out:", error);
-           }
-        
-    
+        pb.authStore.clear()
+        router.refresh();
     }
 
     return (
