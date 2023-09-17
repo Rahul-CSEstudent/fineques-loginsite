@@ -3,50 +3,33 @@ import React, { useState } from 'react';
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation';
+import { pb } from "@/components/config/pocketbase";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [error, setError] = useState<string>();
-
   const { toast } = useToast()
   const router = useRouter()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
-
-    fetch('/api/check', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.user) {
-          toast({
-            variant: "default",
-            title: "Logged in successfully"
-          })
-          router.push("/choose");
-        } else {
-          toast({
-            variant: "destructive",
-            title: "User not found.",
-            description: "kindly, check your mail id and password"
-          })
-        }
+    pb.collection("users").authWithPassword(email, password).then((authData)=>{
+      console.log("from auth page", authData.record);
+      toast({
+        variant: "default",
+        title: "Logged in successfully"
       })
-      .catch(error => {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "Something went wrong on our side. contact the team if problem persists"
-        })
-      });
+      router.refresh();
+    }).catch((err)=>{
+      console.log("from auth page", err);
+      toast({
+        variant: "destructive",
+        title: "Cannot log in",
+        description: "kindly, check your mail id and password"
+      })
+    })
   };
 
   return (

@@ -3,25 +3,29 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
 import {useEffect} from "react";
+import dynamic from 'next/dynamic'
 
-import ChoiceList from "@/components/choose"
+const Login = dynamic(() => import('@/components/login'), { ssr: false })
+const ChoiceList = dynamic(() => import('@/components/choose'), { ssr: false })
+import { pb } from "@/components/config/pocketbase";
 
 export default function Home() {
 
-  
-  const {user, error, isLoading } = useUser();
-  const router = useRouter();
+  console.log("pocketbase url", process.env.POCKETBASE_URL)
+
+  const router = useRouter()
 
   useEffect(()=>{
-    if (!user){
-      router.push('/api/auth/login')
+    console.log(pb.authStore.model);
+    window.ondblclick = ()=>{
+      pb.authStore.clear();
+      router.refresh();
     }
-  }, [user])
+  }, []);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  if (pb.authStore.isValid){
+    return <ChoiceList/>
+  }
 
-  return (
-   <div><ChoiceList/></div>
-  )
+  return <Login />
 }
