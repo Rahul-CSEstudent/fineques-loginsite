@@ -86,7 +86,7 @@ export default function ChoiceList() {
                     Reset Password
                 </button>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <ChoiceCard
                         title={choices[0].title}
                         url={choices[0].page}
@@ -99,12 +99,12 @@ export default function ChoiceList() {
                         content="To view the content for advisor daily report in the dashboard"
                         icon={<LineChart size={30} />}
                     />
-                    <ChoiceCard
+                    {/* <ChoiceCard
                         title={choices[2].title}
                         url={choices[2].page}
                         content="To view the master report containing all the data"
                         icon={<MSquare size={30} />}
-                    />
+                    /> */}
                 </div>
             </div>
         </div>

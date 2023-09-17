@@ -10,10 +10,11 @@ const choices:IChoice[] = [
     {
         title: "Advisor - Daily Report",
         page: "/dashboard/advisor",
-    },{
-        title: "Master Daily Report",
-        page: "/dashboard/master",
-    }
+    },
+    // {
+    //     title: "Master Daily Report",
+    //     page: "/dashboard/master",
+    // }
 ]
 
 export {

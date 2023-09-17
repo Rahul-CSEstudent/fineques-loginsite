@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
       <iframe
         title="ALL CHANNEL DASHBOARD"
         style={{ width: '100%', height: '100%' }}
-        src="https://app.powerbi.com/reportEmbed?reportId=e37360c8-956a-4fc4-a932-1384cc2c64ab&autoAuth=true&ctid=d2c967e6-4fc7-452c-9e79-f78c68ccf915"
+        src="https://app.powerbi.com/view?r=eyJrIjoiZjdmNTY4ODItM2VkZi00OTFhLWE0MTktMDY4YzlhYWFmNjI0IiwidCI6ImQyYzk2N2U2LTRmYzctNDUyYy05ZTc5LWY3OGM2OGNjZjkxNSJ9"
         allowFullScreen
       ></iframe>
     </div>
