@@ -76,6 +76,22 @@ export default function ChoiceList() {
             })
         }
     }
+
+    const signout = async () => {
+        // Add sign out logic here
+       // Add sign out logic here
+           try {
+               // Perform sign out operation
+               await (pb.authStore as any).signOut();
+               console.log("logged out")
+               // Redirect to login page
+           } catch (error) {
+               console.log("Error signing out:", error);
+           }
+        
+    
+    }
+
     return (
         <div className="min-h-screen flex justify-center items-center">
             <div className="flex flex-wrap gap-4 justify-center items-center">
@@ -84,6 +100,13 @@ export default function ChoiceList() {
                     onClick={requestPasswordChange}
                 >
                     Reset Password
+                </button>
+
+                <button 
+                    className="absolute bottom-0 right-0 m-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={signout}
+                >
+                    Sign Out
                 </button>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
