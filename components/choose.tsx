@@ -86,7 +86,7 @@ export default function ChoiceList() {
                     Reset Password
                 </button>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
                     <ChoiceCard
                         title={choices[0].title}
                         url={choices[0].page}
