@@ -8,7 +8,7 @@ export default function Home() {
   const { user , error, isLoading } = useUser();
   return ( 
 
-    <a href="/api/auth/login">Login</a>
+    <div><Login/></div>
   )
 }
 
