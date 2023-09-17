@@ -12,6 +12,7 @@ import { IChoice, choices } from "@/components/config/choice";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 import { pb } from "./config/pocketbase";
+import { useToast } from "@/components/ui/use-toast"
 
 interface ChoiceCardProps {
     title: string,
@@ -22,7 +23,7 @@ interface ChoiceCardProps {
 export function ChoiceCard(props: ChoiceCardProps) {
 
     const router = useRouter();
-
+    
     return (
         <Card onClick={() => router.push(props.url)} className="md:max-w-xs cursor-pointer group">
             <CardHeader className="flex gap-3 items-center flex-row">
@@ -42,6 +43,9 @@ export function ChoiceCard(props: ChoiceCardProps) {
 }
 
 export default function ChoiceList() {
+
+    const { toast } = useToast();
+
     const [showModal, setShowModal] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
     const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -49,7 +53,27 @@ export default function ChoiceList() {
 
     const requestPasswordChange = async () => {
         if(pb.authStore.model){
-            pb.collection("users").requestPasswordReset(pb.authStore.model.email);
+            console.log(pb.authStore.model.email)
+            pb.collection("users").requestPasswordReset(pb.authStore.model.email).catch((err)=>{
+                console.log("error requesting password reset ", err )
+                toast({
+                    variant: "destructive",
+                    title: "Oops!",
+                    description: "cannot reset password. kindly try again later"
+                  })
+            }).then((value)=>{
+                if (value){
+                    toast({
+                        title: "Sent the password reset link to your mail address",
+                    })
+                }else{
+                    toast({
+                        variant: "destructive",
+                        title: "Oops! Can't send mail",
+                        description: "This is on us. Please contact the support team"
+                    })
+                }
+            })
         }
     }
     return (
